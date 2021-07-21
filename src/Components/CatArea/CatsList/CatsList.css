@@ -1,0 +1,25 @@
+.CatsList {
+	
+}
+
+
+.CatsList table{
+margin: auto;
+}
+.CatsList table, th,td{
+border: 1px solid whitesmoke;
+}
+.CatsList tr:nth-child(even){
+background-color: sandybrown;
+}
+.CatsList tr:nth-child(odd){
+background-color: seagreen;
+}
+.CatsList th{
+    background-color: palevioletred;
+}
+
+.CatsList img{
+    width: 75px;
+    height: 75px;
+}
