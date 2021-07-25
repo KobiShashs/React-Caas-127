@@ -3,6 +3,7 @@ import { Component } from "react";
 import { NavLink } from "react-router-dom";
 import CatModel from "../../../Models/CatModel";
 import notify, { SccMsg } from "../../../Service/Notification";
+import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import "./CatsList.css";
 
 interface CatsListState {
@@ -22,7 +23,7 @@ class CatsList extends Component<{}, CatsListState> {
     try {
       const response = await axios.get<CatModel[]>(this.end_point);
       this.setState({ cats: response.data });
-      notify.success(SccMsg.ADDED_CAT)
+      notify.success(SccMsg.DOWNLOADED_CATS)
     } catch (err) {
       notify.error(err);
     }
@@ -46,7 +47,9 @@ class CatsList extends Component<{}, CatsListState> {
   public render(): JSX.Element {
     return (
       <div className="CatsList">
-        <table>
+
+        {!this.state.cats.length && <EmptyView msg="No Cats for you"/>}
+        {this.state.cats.length &&  <table>
           <thead>
             <tr>
               <th>Id</th>
@@ -55,7 +58,7 @@ class CatsList extends Component<{}, CatsListState> {
               <th>Color</th>
               <th>Image</th>
               <th>
-                Actions <button>➕</button>
+                Actions <NavLink to="/cats/add"><button>➕</button></NavLink>
               </th>
             </tr>
           </thead>
@@ -77,7 +80,7 @@ class CatsList extends Component<{}, CatsListState> {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> }
       </div>
     );
   }
