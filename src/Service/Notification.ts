@@ -3,6 +3,7 @@ import {Notyf} from 'notyf'
 export enum SccMsg{
     ADDED_CAT = 'Added cat successfully',
     DOWNLOADED_CATS = 'All cats are here!',
+    DELETED_CAT = 'deleted cat successfully',
 
 }
 export enum ErrMsg{

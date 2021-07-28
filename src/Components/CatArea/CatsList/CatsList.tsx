@@ -2,6 +2,9 @@ import axios from "axios";
 import { Component } from "react";
 import { NavLink } from "react-router-dom";
 import CatModel from "../../../Models/CatModel";
+import { catsDownloadedAction } from "../../../Redux/CatsState";
+import store from "../../../Redux/Store";
+import globals from "../../../Service/Globals";
 import notify, { SccMsg } from "../../../Service/Notification";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import "./CatsList.css";
@@ -11,22 +14,28 @@ interface CatsListState {
 }
 
 class CatsList extends Component<{}, CatsListState> {
-  private end_point = "http://localhost:8080/api/cats/";
   public constructor(props: {}) {
     super(props);
     this.state = {
-      cats: [],
+      cats: store.getState().catState.cats,
     };
   }
 
   public async componentDidMount() {
-    try {
-      const response = await axios.get<CatModel[]>(this.end_point);
-      this.setState({ cats: response.data });
-      notify.success(SccMsg.DOWNLOADED_CATS)
-    } catch (err) {
-      notify.error(err);
-    }
+
+      if(this.state.cats.length==0){
+        try {
+          const response = await axios.get<CatModel[]>(globals.urls.cats);
+    
+          store.dispatch(catsDownloadedAction(response.data)) // Global State;
+    
+          this.setState({ cats: response.data }); //Local State
+          notify.success(SccMsg.DOWNLOADED_CATS)
+        } catch (err) {
+          notify.error(err);
+        }
+      }
+   
   }
 
   public async deleteCat(id: any) {
@@ -36,10 +45,11 @@ class CatsList extends Component<{}, CatsListState> {
     if (res) {
       id = +id;
       try {
-        const response = await axios.delete<any>(this.end_point + id);
+        const response = await axios.delete<any>(globals.urls.cats + id);
         this.setState({ cats: this.state.cats.filter((c) => c.id !== id) });
+        notify.success(SccMsg.DELETED_CAT);
       } catch (err) {
-        alert(err.message);
+        notify.error(err.message);
       }
     }
   }
@@ -48,6 +58,7 @@ class CatsList extends Component<{}, CatsListState> {
     return (
       <div className="CatsList">
 
+        <h1>Cats</h1>
         {!this.state.cats.length && <EmptyView msg="No Cats for you"/>}
         {this.state.cats.length &&  <table>
           <thead>
@@ -70,7 +81,7 @@ class CatsList extends Component<{}, CatsListState> {
                 <td>{c.weight}</td>
                 <td>{c.color}</td>
                 <td>
-                  <img src={this.end_point + "images/" + c.image} />
+                  <img src={globals.urls.images + c.image} />
                 </td>
                 <td>
                   <button onClick={() => this.deleteCat(c.id)}>🗑️</button>

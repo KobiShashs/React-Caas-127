@@ -2,6 +2,7 @@ import axios from "axios";
 import { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import CatModel from "../../../Models/CatModel";
+import notify from "../../../Service/Notification";
 import "./CatDetails.css";
 
 interface RouteParam{
@@ -33,7 +34,7 @@ class CatDetails extends Component<CatDetailsProps, CatDetailsState> {
             this.setState({cat:response.data});
         } 
         catch(err){
-            alert(err.message);
+            notify.error(err.message);
         }
     }
 

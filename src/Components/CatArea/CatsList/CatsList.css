@@ -5,21 +5,25 @@
 
 .CatsList table{
 margin: auto;
+color: #0C4271
 }
 .CatsList table, th,td{
 border: 1px solid whitesmoke;
 }
 .CatsList tr:nth-child(even){
-background-color: sandybrown;
+background-color: #FFE5E2;
 }
 .CatsList tr:nth-child(odd){
-background-color: seagreen;
+background-color: #F5ABC9;
 }
 .CatsList th{
-    background-color: palevioletred;
+    background-color: #E93B81;
 }
 
 .CatsList img{
-    width: 75px;
-    height: 75px;
+    width: 35px;
+    height: 35px;
+    border: 2px dotted black;
+    border-radius: 50%;
+    padding: 5px;
 }

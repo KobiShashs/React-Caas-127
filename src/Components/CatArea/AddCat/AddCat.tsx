@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import CatModel from "../../../Models/CatModel";
 import CatUploadModel from "../../../Models/CatUploadModel";
+import { catsAddedAction } from "../../../Redux/CatsState";
+import store from "../../../Redux/Store";
+import globals from "../../../Service/Globals";
 import notify, { SccMsg } from "../../../Service/Notification";
 import "./AddCat.css";
 
@@ -24,10 +28,10 @@ function AddCat(): JSX.Element {
       formData.append("color", cat.color);
       formData.append("birthday", cat.birthday.toString());
       formData.append("image",cat.image.item(0));
-      const response = await axios.post<CatUploadModel>(
-        "http://localhost:8080/api/cats",
-        formData
-      );
+      const response = await axios.post<CatModel>(globals.urls.cats,formData);
+
+      store.dispatch(catsAddedAction(response.data));
+
       console.log(response.data);
       notify.success(SccMsg.ADDED_CAT)
       history.push("/cats");

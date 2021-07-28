@@ -4,9 +4,8 @@ import "./Main.css";
 function Main(): JSX.Element {
     return (
         <div className="Main">
-            <p>Moshe</p>
-            {/* <ContactUs/> */}
-			{/* <img src="https://media.giphy.com/media/GeimqsH0TLDt4tScGw/giphy.gif" alt=""/> */}
+            <h1>Home</h1>
+			<img src="https://media.giphy.com/media/3oEduLSwuxfMoTbMQg/giphy.gif" alt=""/>
         </div>
     );
 }
