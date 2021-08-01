@@ -4,10 +4,14 @@ export enum SccMsg{
     ADDED_CAT = 'Added cat successfully',
     DOWNLOADED_CATS = 'All cats are here!',
     DELETED_CAT = 'deleted cat successfully',
+    REGISTER_SUCCESS = 'you have been registered successfully',
+    LOGIN_SUCCESS = 'you have been logged in successfully',
+    LOGOUT_SUCCESS = 'you have been logged out successfully',
+    
 
 }
 export enum ErrMsg{
-
+    PLS_LOGIN = 'Please login in order to communicate with our server',
 }
 class Notify{
 

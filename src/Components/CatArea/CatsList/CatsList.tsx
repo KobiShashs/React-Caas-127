@@ -5,6 +5,7 @@ import CatModel from "../../../Models/CatModel";
 import { catsDownloadedAction } from "../../../Redux/CatsState";
 import store from "../../../Redux/Store";
 import globals from "../../../Service/Globals";
+import tokenAxios from "../../../Service/InterceptorAxios";
 import notify, { SccMsg } from "../../../Service/Notification";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import "./CatsList.css";
@@ -25,7 +26,13 @@ class CatsList extends Component<{}, CatsListState> {
 
       if(this.state.cats.length==0){
         try {
-          const response = await axios.get<CatModel[]>(globals.urls.cats);
+
+
+          //Sending token without interceptor
+          // const headers = {"authorization": store.getState().authState.user.token};
+          // const response = await axios.get<CatModel[]>(globals.urls.cats,{headers: headers});
+          
+          const response = await tokenAxios.get<CatModel[]>(globals.urls.cats);
     
           store.dispatch(catsDownloadedAction(response.data)) // Global State;
     

@@ -1,4 +1,5 @@
 import { combineReducers, createStore } from "redux";
+import { authReducer } from "./AuthState";
 import { catsReducer } from "./CatsState";
 
 // Single Reducer
@@ -6,7 +7,7 @@ import { catsReducer } from "./CatsState";
 //export default store;
 
 // Multiple Reducers
-const reducers = combineReducers({catState: catsReducer/* ,  next resource*/})
+const reducers = combineReducers({catState: catsReducer,authState: authReducer})
 const store = createStore(reducers);
 
 export default store;

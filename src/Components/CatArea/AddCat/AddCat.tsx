@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import CatModel from "../../../Models/CatModel";
@@ -6,7 +7,7 @@ import CatUploadModel from "../../../Models/CatUploadModel";
 import { catsAddedAction } from "../../../Redux/CatsState";
 import store from "../../../Redux/Store";
 import globals from "../../../Service/Globals";
-import notify, { SccMsg } from "../../../Service/Notification";
+import notify, { ErrMsg, SccMsg } from "../../../Service/Notification";
 import "./AddCat.css";
 
 function AddCat(): JSX.Element {
@@ -20,6 +21,14 @@ function AddCat(): JSX.Element {
 
   const history = useHistory();
 
+  useEffect(()=>{
+    // If we don't have a user object - we are not logged in
+    if(!store.getState().authState.user){
+        notify.error(ErrMsg.PLS_LOGIN);
+        history.push("/login")
+    }
+})
+
   async function send(cat: CatUploadModel) {
     try{
       const formData = new FormData();
@@ -28,7 +37,8 @@ function AddCat(): JSX.Element {
       formData.append("color", cat.color);
       formData.append("birthday", cat.birthday.toString());
       formData.append("image",cat.image.item(0));
-      const response = await axios.post<CatModel>(globals.urls.cats,formData);
+
+      const response = await axios.post<CatModel>(globals.urls.cats,formData,{});
 
       store.dispatch(catsAddedAction(response.data));
 
